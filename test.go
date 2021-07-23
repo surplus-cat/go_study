@@ -13,8 +13,35 @@ package main
 
 import (
 	"fmt"
+	"reflect"
 )
 
+type test struct {
+	a int
+	b string
+	c []int
+}
+
+type test1 struct {
+	a int
+	b string
+	c []int
+}
+
 func main() {
-	fmt.Println("Hello, World!")
+	fmt.Println("Hello, World!");
+
+	
+	
+	t1 := test{
+		a: 1,
+		b: "b",
+		c: []int{1,2,3},
+	}
+	t2 := test1{
+		a: 1,
+		b: "b",
+		c: []int{1,2,3},
+	}
+	fmt.Println(reflect.DeepEqual(t1,t2))
 }
