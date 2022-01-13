@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -55,11 +56,11 @@ func main() {
 
 	r.GET("/anotherjson", func(c *gin.Context) {
 
-		dataList := map[string]interface{}{
-			"msg":  "请求成功",
-			"code": "10001200",
-			"age":  20,
-		}
+		// dataList := map[string]interface{}{
+		// 	"msg":  "请求成功",
+		// 	"code": "10001200",
+		// 	"age":  20,
+		// }
 		//方法二 结构体
 		data := &CodeInfo{
 			Message: "wahahah",
@@ -83,5 +84,36 @@ func main() {
 	{"name":"xiaoming","age":23}
 	*/
 
+	// 路由组1 ，处理GET请求
+	v1 := r.Group("/v1")
+	// {} 是书写规范
+	{
+		v1.GET("/login", login)
+		v1.GET("submit", submit)
+	}
+	v2 := r.Group("/v2")
+	{
+		v2.POST("/login", login)
+		v2.POST("/submit", submit)
+	}
+
+	r.GET("/topgoer", handle)
+
 	r.Run(":7979")
+}
+
+func login(c *gin.Context) {
+	name := c.DefaultQuery("name", "yang")
+	c.String(200, fmt.Sprintf("hello %s\n", name))
+}
+
+func submit(c *gin.Context) {
+	name := c.DefaultQuery("name", "doll")
+	c.String(200, fmt.Sprintf("hello %s\n", name))
+}
+
+func handle(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"message": "hello www.ccc.com",
+	})
 }
